@@ -1,0 +1,27 @@
+{
+  "name": "ofgm-backend",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "serverless offline start --stage local --region us-east-1 --httpPort 3001",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "development": "echo \"Hola hola\" "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexinGtz/OFGM-Backend.git"
+  },
+  "author": "Alex Gutierrez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexinGtz/OFGM-Backend/issues"
+  },
+  "homepage": "https://github.com/AlexinGtz/OFGM-Backend#readme",
+  "dependencies": {
+    "serverless": "^3.19.0",
+    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-offline": "^8.8.0",
+    "serverless-plugin-typescript": "^2.1.2"
+  }
+}

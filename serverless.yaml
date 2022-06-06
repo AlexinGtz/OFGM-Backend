@@ -1,0 +1,82 @@
+service: ofgm-backend
+
+plugins: 
+  - serverless-offline
+  - serverless-dynamodb-local
+  - serverless-plugin-typescript
+
+package:
+  individually: true
+
+provider: 
+  name: aws
+  runtime: nodejs14.x
+  region: ${opt:region, "us-east-1"}
+  stage: ${opt:stage, "local"}
+  timeout: 30
+  profile: alexG #Cambiar
+
+custom:
+  defaults: ${file(./defaults.yaml)}
+  tags: ${self:custom.defaults.tags}
+  environment: ${self:custom.defaults.environment}
+  service: ${self:service}
+  base: ${self:service}-${self:provider.stage}
+  dynamodb:
+    stages:
+      - local
+    start: 
+      port: 4000
+      inMemory: true
+      migrate: true
+      seed: false
+    # seed:
+    #   tables:
+    #     sources:
+    #       - table: users
+    #         sources: [./src/mocks/users.json]
+
+resources:
+  Resources:
+    eventsTable: 
+      Type: AWS::DynamoDB::Table
+      Properties: 
+        BillingMode: PROVISIONED
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+        Tags:
+          - ${self:provider.stage}
+          - ${self:service}
+        AttributeDefinitions: 
+          - AttributeName: "id"
+            AttributeType: "S"
+          - AttributeName: "date"
+            AttributeType: "S"
+        KeySchema: 
+          - AttributeName: "id"
+            KeyType: "HASH"
+          - AttributeName: "date"
+            KeyType: "RANGE"
+        TableName: ${self:provider.stage}-events
+    photoBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:service}-${self:provider.stage}-photobucket
+
+functions:
+  test:
+    name: testFunction
+    description: ''
+    handler: src/testLambda.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - src/testLambda
+    events:
+      - http:
+         path: /test
+         method: get
+         cors: true
+  
