@@ -41,6 +41,7 @@
 `git pull` _Jala los cambios de la nube_ <br>
 `git fetch` _Jala la informacion de los cambios en la nube_ <br>
 `git switch` _Cambia tu rama local_ <br>
+`git clone {repo}` _Clonar el repo den la nube_ <br>
 
 <br>
 
