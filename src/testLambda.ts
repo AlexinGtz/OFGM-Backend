@@ -1,7 +1,7 @@
-export const handler = (event) => {
+export const handler = async (event) => {
     console.log("Hello");
     return {
         headers: {},
-        body: JSON.stringify("Succesful"),
+        body: JSON.stringify("Success"),
     };
 }
