@@ -14,6 +14,7 @@
 
 - `npm install`
 - `serverless dynamodb install`
+- `npm install typescript -g`
 
 <br>
 
