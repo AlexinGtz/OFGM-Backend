@@ -22,7 +22,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: npm test 
+    - run: npm test
     - run: echo  ${{ secrets.GITHUB_TOKEN }}
     - run: echo  ${{ secrets.SONARCLOUD_TOKEN }}
     - name: SonarCloud Scan
