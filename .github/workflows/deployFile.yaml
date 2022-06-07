@@ -1,6 +1,7 @@
 name: Deploy
 on:
-  deployment
+  release:
+    types: [created]
 
 jobs:
   build:
