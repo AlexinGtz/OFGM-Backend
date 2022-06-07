@@ -23,8 +23,8 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm test
-    - run: echo  ${{ secrets.GITHUB_TOKEN }}
-    - run: echo  ${{ secrets.SONARCLOUD_TOKEN }}
+    - run: ls -al
+    - run: pwd
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@master
       env:
