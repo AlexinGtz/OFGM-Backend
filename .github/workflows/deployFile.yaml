@@ -2,6 +2,9 @@ name: Deploy
 on:
   release:
     types: [published, created, edited, released]
+  push:
+    tags:
+      - ^prod\/.+$|^qa\/.+$
 
 jobs:
   build:
