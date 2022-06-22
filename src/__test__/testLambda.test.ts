@@ -11,4 +11,18 @@ describe('Sample Test', () => {
 
         expect(res).toEqual(expectedResponse);
     });
+
+    it('Should enter if', async () => {
+        const event = {
+            id: 1,
+        }
+        const res = await handler(event);
+
+        const expectedResponse = {
+            body: JSON.stringify(event.id),
+            headers: {}
+        }
+
+        expect(res).toEqual(expectedResponse);
+    });
 });

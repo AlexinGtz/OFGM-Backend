@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "serverless offline start --stage local --region us-east-1 --httpPort 3001",
-    "deployTest": "echo \"Deploying to env\"",
+    "deployQA": "serverless deploy --stage qa --region us-east-1",
     "test": "jest --coverage"
   },
   "repository": {
@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@types/jest": "^28.1.1",
+    "@types/node": "^18.0.0",
     "jest": "^28.1.0",
     "serverless-dynamodb-local": "^0.2.40",
     "serverless-offline": "^8.8.0",

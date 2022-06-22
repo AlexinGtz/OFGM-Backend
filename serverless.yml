@@ -15,6 +15,15 @@ provider:
   stage: ${opt:stage, "local"}
   timeout: 30
   profile: alexG #Cambiar
+  apiGateway:
+    restApiId: !Ref MainApi
+    restApiRootResourceId: !GetAtt MainApi.RootResourceId
+
+resources:
+  - '${file(./aws/resources/cloudfront.yaml)}'
+  - '${file(./aws/resources/dynamodb.yaml)}'
+  - '${file(./aws/resources/s3.yaml)}'
+  - '${file(./aws/resources/apigateway.yaml)}'
 
 custom:
   defaults: ${file(./defaults.yaml)}
@@ -30,39 +39,18 @@ custom:
       inMemory: true
       migrate: true
       seed: false
-    # seed:
-    #   tables:
-    #     sources:
-    #       - table: users
-    #         sources: [./src/mocks/users.json]
+    seed:
+      tables:
+        sources:
+          - table: ${self:provider.stage}-users
+            sources: [./src/seeds/users.json]
+          - table: ${self:provider.stage}-concerts
+            sources: [./src/seeds/concerts.json]
+          - table: ${self:provider.stage}-purchases
+            sources: [./src/seeds/purchases.json]
+          - table: ${self:provider.stage}-news
+            sources: [./src/seeds/news.json]
 
-resources:
-  Resources:
-    eventsTable: 
-      Type: AWS::DynamoDB::Table
-      Properties: 
-        BillingMode: PROVISIONED
-        ProvisionedThroughput:
-          ReadCapacityUnits: 5
-          WriteCapacityUnits: 5
-        Tags:
-          - ${self:provider.stage}
-          - ${self:service}
-        AttributeDefinitions: 
-          - AttributeName: "id"
-            AttributeType: "S"
-          - AttributeName: "date"
-            AttributeType: "S"
-        KeySchema: 
-          - AttributeName: "id"
-            KeyType: "HASH"
-          - AttributeName: "date"
-            KeyType: "RANGE"
-        TableName: ${self:provider.stage}-events
-    photoBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:service}-${self:provider.stage}-photobucket
 
 functions:
   test:
@@ -74,6 +62,9 @@ functions:
     package:
       patterns:
         - src/testLambda
+    environment:
+      USERS_TABLE: 
+        Ref:  UsersTable
     events:
       - http:
          path: /test

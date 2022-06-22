@@ -1,0 +1,17 @@
+Resources:
+  OFGMWebpage:
+        Type: AWS::S3::Bucket
+        Properties:
+          Tags:
+            - Key: Stage
+              Value: ${self:provider.stage}
+            - Key: Service
+              Value: ${self:service}
+  ImagesBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      Tags:
+        - Key: Stage
+          Value: ${self:provider.stage}
+        - Key: Service
+          Value: ${self:service}

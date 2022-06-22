@@ -1,7 +1,18 @@
-export const handler = async (event) => {
+import { eventType } from './types/testLambda.types';
+
+export const handler = async (event: eventType) => {
     console.log("Hello");
+    if(event.id){
+        console.log('Has id');
+    }
+
+    const res = event.name + 'Hola';
+    const anotherRes = event.age ? event.age * 2 : null;
+
+    console.log(process.env.USERS_TABLE);
+
     return {
         headers: {},
-        body: JSON.stringify("Success"),
+        body: JSON.stringify(event.id ? event.id : "Success"),
     };
 }
