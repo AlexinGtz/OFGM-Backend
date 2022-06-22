@@ -1,5 +1,6 @@
 #!/bin/bash
 
-ls -a
+echo $1
+echo $2
 
 

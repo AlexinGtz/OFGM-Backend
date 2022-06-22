@@ -11,5 +11,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
-      run: ./src/scripts/deploy.sh
+      env:
+        ACCESS_KEY: AKIAWY32JMKLXYD6DLUP
+        SECRET_KEY: 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
+      run: ./src/scripts/deploy.sh ${ACCESS_KEY} ${SECRET_KEY}
       shell: bash
