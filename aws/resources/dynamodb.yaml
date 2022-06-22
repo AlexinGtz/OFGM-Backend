@@ -1,0 +1,89 @@
+Resources:
+  concertsTable:
+      Type: AWS::DynamoDB::Table
+      Properties: 
+        TableName: ${self:provider.stage}-concerts
+        BillingMode: PROVISIONED
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+        AttributeDefinitions: 
+          - AttributeName: "id"
+            AttributeType: "S"
+          - AttributeName: "concertDate"
+            AttributeType: "S"
+        KeySchema: 
+          - AttributeName: "id"
+            KeyType: "HASH"
+          - AttributeName: "concertDate"
+            KeyType: "RANGE"
+        Tags:
+          - Key: Stage
+            Value: ${self:provider.stage}
+          - Key: Service
+            Value: ${self:service}
+  usersTable:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      TableName: ${self:provider.stage}-users
+      BillingMode: PROVISIONED
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      AttributeDefinitions: 
+        - AttributeName: "id"
+          AttributeType: "S"
+      KeySchema: 
+        - AttributeName: "id"
+          KeyType: "HASH"
+      Tags:
+        - Key: Stage
+          Value: ${self:provider.stage}
+        - Key: Service
+          Value: ${self:service}
+  purchasesTable:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      TableName: ${self:provider.stage}-purchases
+      BillingMode: PROVISIONED
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      AttributeDefinitions: 
+        - AttributeName: "id"
+          AttributeType: "S"
+        - AttributeName: "date"
+          AttributeType: "S"
+      KeySchema: 
+        - AttributeName: "id"
+          KeyType: "HASH"
+        - AttributeName: "date"
+          KeyType: "RANGE"
+      Tags:
+        - Key: Stage
+          Value: ${self:provider.stage}
+        - Key: Service
+          Value: ${self:service}
+  newsTable:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      TableName: ${self:provider.stage}-news
+      BillingMode: PROVISIONED
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      AttributeDefinitions: 
+        - AttributeName: "id"
+          AttributeType: "S"
+        - AttributeName: "date"
+          AttributeType: "S"
+      KeySchema: 
+        - AttributeName: "id"
+          KeyType: "HASH"
+        - AttributeName: "date"
+          KeyType: "RANGE"
+      Tags:
+        - Key: Stage
+          Value: ${self:provider.stage}
+        - Key: Service
+          Value: ${self:service}

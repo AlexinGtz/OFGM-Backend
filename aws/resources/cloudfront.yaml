@@ -1,0 +1,49 @@
+Resources:
+  MainDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties: 
+        DistributionConfig:
+          DefaultCacheBehavior:
+              CachePolicyId: !Ref MainCachePolicy
+              TargetOriginId: !Ref OFGMWebpage
+              AllowedMethods: 
+                - GET
+                - POST
+                - OPTIONS
+                - HEAD
+                - DELETE
+                - PUT
+                - PATCH
+              ViewerProtocolPolicy: allow-all
+          HttpVersion: http2
+          Enabled: true
+          PriceClass: PriceClass_100
+          DefaultRootObject: index.html
+          Origins:
+            - 
+              S3OriginConfig: 
+                OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${MainOAI}
+              Id: !Ref OFGMWebpage
+              DomainName: !GetAtt OFGMWebpage.DomainName
+  MainOAI:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties: 
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: OAI for OFGMWebpage
+  MainCachePolicy: 
+    Type: AWS::CloudFront::CachePolicy
+    Properties: 
+      CachePolicyConfig: 
+          Comment: Main Cache
+          DefaultTTL: 6000
+          MaxTTL: 10000
+          MinTTL: 2000
+          Name: MainCahce
+          ParametersInCacheKeyAndForwardedToOrigin: 
+            CookiesConfig: 
+                CookieBehavior: all
+            HeadersConfig: 
+              HeaderBehavior: none
+            QueryStringsConfig: 
+              QueryStringBehavior: all
+            EnableAcceptEncodingGzip: false

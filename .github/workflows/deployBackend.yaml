@@ -1,0 +1,16 @@
+name: Deploy
+on: workflow_dispatch
+
+jobs:
+  build:
+    name: deploy
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      run: ./src/scripts/deploy.sh
+      shell: bash
