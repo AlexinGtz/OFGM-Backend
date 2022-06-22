@@ -1,6 +1,3 @@
 #!/bin/bash
 
-echo $1
-echo $2
-
-
+serverless deploy 
