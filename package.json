@@ -18,13 +18,11 @@
     "url": "https://github.com/AlexinGtz/OFGM-Backend/issues"
   },
   "homepage": "https://github.com/AlexinGtz/OFGM-Backend#readme",
-  "dependencies": {
-    "serverless": "^3.19.0"
-  },
   "devDependencies": {
     "@types/jest": "^28.1.1",
     "@types/node": "^18.0.0",
     "jest": "^28.1.0",
+    "serverless": "^3.19.0",
     "serverless-dynamodb-local": "^0.2.40",
     "serverless-offline": "^8.8.0",
     "serverless-plugin-typescript": "^2.1.2",
