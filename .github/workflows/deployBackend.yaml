@@ -6,6 +6,10 @@ on:
         description: 'Environment'     
         required: true
         default: 'qa'
+        type: choice
+        options:
+        - prod
+        - qa
 
 jobs:
   build:
