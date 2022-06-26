@@ -3,6 +3,7 @@ Resources:
       Type: AWS::CloudFront::Distribution
       Properties: 
         DistributionConfig:
+          Aliases: ofgm.com.mx
           DefaultCacheBehavior:
               CachePolicyId: !Ref MainCachePolicy
               TargetOriginId: !Ref OFGMWebpage
@@ -16,6 +17,7 @@ Resources:
                 - PATCH
               ViewerProtocolPolicy: allow-all
           HttpVersion: http2
+          IPV6Enabled: true
           Enabled: true
           PriceClass: PriceClass_100
           DefaultRootObject: index.html
@@ -38,7 +40,7 @@ Resources:
           DefaultTTL: 6000
           MaxTTL: 10000
           MinTTL: 2000
-          Name: MainCahce
+          Name: MainCache
           ParametersInCacheKeyAndForwardedToOrigin: 
             CookiesConfig: 
                 CookieBehavior: all

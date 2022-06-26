@@ -53,14 +53,17 @@ custom:
 
 functions:
   test:
-    name: testFunction
+    name: ${self:custom.base}-testFunction
     description: ''
     handler: src/testLambda.handler
     timeout: 30
     memorySize: 264
     package:
       patterns:
-        - src/testLambda
+        - '!node_modules/**'
+        - '!src/**'
+        - 'src/testLambda.js'
+        - 'src/testLambda.ts'
     environment:
       USERS_TABLE: 
         Ref:  usersTable
