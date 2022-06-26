@@ -14,7 +14,6 @@ provider:
   region: ${opt:region, "us-east-1"}
   stage: ${opt:stage, "local"}
   timeout: 30
-  profile: alexG #Cambiar
   apiGateway:
     restApiId: !Ref MainApi
     restApiRootResourceId: !GetAtt MainApi.RootResourceId
