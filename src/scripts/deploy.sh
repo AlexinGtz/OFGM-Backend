@@ -7,5 +7,6 @@ ENV=$3
 
 npm i serverless -g
 ls -a
-serverless deploy --stage ${ENV} --region us-east-1 
+echo ${ENV}
+serverless deploy --stage=${ENV} --region=us-east-1 
 
