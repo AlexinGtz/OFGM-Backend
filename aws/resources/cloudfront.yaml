@@ -3,8 +3,6 @@ Resources:
       Type: AWS::CloudFront::Distribution
       Properties: 
         DistributionConfig:
-          Aliases: 
-            - ofgm.com.mx
           DefaultCacheBehavior:
               CachePolicyId: !Ref MainCachePolicy
               TargetOriginId: !Ref OFGMWebpage
