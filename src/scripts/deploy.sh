@@ -6,5 +6,6 @@ ENV=$3
 
 ls -a
 
+npm ci
 serverless deploy --stage ${ENV} --region us-east-1 
 
