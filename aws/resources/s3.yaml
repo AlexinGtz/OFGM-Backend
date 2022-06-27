@@ -22,16 +22,8 @@ Resources:
       PolicyDocument: 
         Version: '2012-10-17'
         Statement:
-          - Action:
-              - 's3:GetObject'
+          - Action: 's3:GetObject'
             Effect: Allow
-            Resource: !Join
-              - ''
-              - - 'arn:aws:s3:::'
-                - !Ref OFGMWebpage
-                - /*
+            Resource: !Sub arn:aws:s3:::${OFGMWebpage}/*
             Principal: 
-              - !Join
-                - ''
-                - - 'arn:aws:iam::cloudfront:user/Cloudfront Origin Access Identity'
-                  - !Ref MainOAI
+              AWS: !Sub arn:aws:iam::cloudfront:user/Cloudfront Origin Access Identity ${MainOai}
