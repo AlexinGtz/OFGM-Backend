@@ -15,23 +15,16 @@ Resources:
           Value: ${self:provider.stage}
         - Key: Service
           Value: ${self:service}
-  BucketPolicy:
+  AllowCloudfront:
     Type: AWS::S3::BucketPolicy
+    DependsOn: MainOAI
     Properties: 
       Bucket: !Ref OFGMWebpage
       PolicyDocument: 
-        Version: 2008-10-17
+        Version: '2012-10-17'
         Statement:
-          - Action:
-              - 's3:GetObject'
+          - Action: 's3:GetObject'
             Effect: Allow
-            Resource: !Join
-              - ''
-              - - 'arn:aws:s3:::'
-                - !Ref OFGMWebpage
-                - /*
+            Resource: !Sub arn:aws:s3:::${OFGMWebpage}/*
             Principal: 
-              - !Join
-                - ''
-                - - 'arn:aws:iam::cloudfront:user/Cloudfront Origin Access Identity'
-                  - !Ref MainOAI
+              AWS: arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${MainOAI}
