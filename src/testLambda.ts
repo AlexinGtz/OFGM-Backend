@@ -1,7 +1,6 @@
 import { eventType } from './types/testLambda.types';
 
 export const handler = async (event: eventType) => {
-    console.log("Hello");
     if(event.id){
         console.log('Has id');
     }
