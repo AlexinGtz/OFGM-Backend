@@ -15,8 +15,9 @@ Resources:
           Value: ${self:provider.stage}
         - Key: Service
           Value: ${self:service}
-  BucketPolicy:
+  AllowCloudfront:
     Type: AWS::S3::BucketPolicy
+    DependsOn: MainOAI
     Properties: 
       Bucket: !Ref OFGMWebpage
       PolicyDocument: 
