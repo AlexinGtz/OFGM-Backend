@@ -1,5 +1,5 @@
 export type eventType = {
-    id: number,
-    name: string,
+    id?: number,
+    name?: string,
     age?: number
 }

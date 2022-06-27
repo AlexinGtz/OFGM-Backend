@@ -1,5 +1,15 @@
 name: Deploy
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment'     
+        required: true
+        default: 'qa'
+        type: choice
+        options:
+        - prod
+        - qa
 
 jobs:
   build:
@@ -11,5 +21,5 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
-      run: ./src/scripts/deploy.sh
+      run: ./src/scripts/deploy.sh ${{ secrets.AWS_ACCESS_KEY }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ github.event.inputs.environment }}
       shell: bash

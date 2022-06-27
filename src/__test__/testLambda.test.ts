@@ -15,6 +15,7 @@ describe('Sample Test', () => {
     it('Should enter if', async () => {
         const event = {
             id: 1,
+            name: "uno"
         }
         const res = await handler(event);
 
