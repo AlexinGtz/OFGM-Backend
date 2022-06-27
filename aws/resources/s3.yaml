@@ -20,7 +20,7 @@ Resources:
     Properties: 
       Bucket: !Ref OFGMWebpage
       PolicyDocument: 
-        Version: 2012-10-17
+        Version: 2008-10-17
         Statement:
           - Action:
               - 's3:GetObject'
