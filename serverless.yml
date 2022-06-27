@@ -63,7 +63,7 @@ functions:
         - src/testLambda
     environment:
       USERS_TABLE: 
-        Ref:  UsersTable
+        Ref:  usersTable
     events:
       - http:
          path: /test
