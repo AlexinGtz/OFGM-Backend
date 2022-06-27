@@ -26,4 +26,4 @@ Resources:
             Effect: Allow
             Resource: !Sub arn:aws:s3:::${OFGMWebpage}/*
             Principal: 
-              AWS: !Sub arn:aws:iam::cloudfront:user/Cloudfront Origin Access Identity ${MainOai}
+              AWS: !Sub arn:aws:iam::cloudfront:user/Cloudfront Origin Access Identity ${MainOAI}
