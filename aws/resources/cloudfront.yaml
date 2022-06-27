@@ -14,7 +14,7 @@ Resources:
                 - DELETE
                 - PUT
                 - PATCH
-              ViewerProtocolPolicy: allow-all
+              ViewerProtocolPolicy: redirect-to-https
           HttpVersion: http2
           IPV6Enabled: true
           Enabled: true

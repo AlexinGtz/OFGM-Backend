@@ -15,3 +15,23 @@ Resources:
           Value: ${self:provider.stage}
         - Key: Service
           Value: ${self:service}
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties: 
+      Bucket: !Ref OFGMWebpage
+      PolicyDocument: 
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 's3:GetObject'
+            Effect: Allow
+            Resource: !Join
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref OFGMWebpage
+                - /*
+            Principal: 
+              - !Join
+                - ''
+                - - 'arn:aws:iam::cloudfront:user/Cloudfront Origin Access Identity'
+                  - !Ref MainOAI
