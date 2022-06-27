@@ -26,5 +26,4 @@ Resources:
           - Action: 's3:GetObject'
             Effect: Allow
             Resource: !Sub arn:aws:s3:::${OFGMWebpage}/*
-            Principal: 
-              AWS: !Sub arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${MainOAI}
+            Principal: !Sub arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${MainOAI}
