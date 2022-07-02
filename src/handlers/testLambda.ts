@@ -1,4 +1,4 @@
-import { eventType } from './types/testLambda.types';
+import { eventType } from '../types/testLambda.types';
 
 export const handler = async (event: eventType) => {
     if(event.id){

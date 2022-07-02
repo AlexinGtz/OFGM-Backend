@@ -1,4 +1,4 @@
-import { handler } from '../testLambda';
+import { handler } from '../handlers/testLambda';
 
 describe('Sample Test', () => {
     it('Should return Successful', async () => {

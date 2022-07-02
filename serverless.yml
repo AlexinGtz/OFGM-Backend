@@ -30,6 +30,10 @@ custom:
   environment: ${self:custom.defaults.environment}
   service: ${self:service}
   base: ${self:service}-${self:provider.stage}
+  export-env:
+    filename: .env
+    overwrite: false
+    enableOffline: true
   dynamodb:
     stages:
       - local
@@ -37,7 +41,7 @@ custom:
       port: 4000
       inMemory: true
       migrate: true
-      seed: false
+      seed: true
     seed:
       tables:
         sources:
@@ -52,21 +56,22 @@ custom:
 
 
 functions:
-  test:
-    name: testFunction
-    description: ''
-    handler: src/testLambda.handler
+  getConcertById:
+    name: ${self:custom.base}-getConcertById
+    description: 'Retrieves a concert by Id'
+    handler: src/handlers/getConcertById.handler
     timeout: 30
     memorySize: 264
     package:
       patterns:
-        - src/testLambda
+        - ! src/**/*
+        - src/helpers/dynamodb.ts
+        - src/getConcertById.ts
     environment:
-      USERS_TABLE: 
-        Ref:  usersTable
+      CONCERTS_TABLE: !Ref concertsTable
     events:
       - http:
-         path: /test
+         path: /concert/{id}
          method: get
-         cors: true
+         cors: true 
   
