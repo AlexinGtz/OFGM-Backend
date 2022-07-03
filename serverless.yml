@@ -74,4 +74,58 @@ functions:
          path: /concert/{id}
          method: get
          cors: true 
+  createConcert:
+    name: ${self:custom.base}-createConcert
+    description: 'Creates a concert'
+    handler: src/handlers/createConcert.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - ! src/**/*
+        - src/helpers/dynamodb.ts
+        - src/createConcert.ts
+    environment:
+      CONCERTS_TABLE: ${self:custom.environment.CONCERTS_TABLE}
+    events:
+      - http:
+         path: /concert
+         method: post
+         cors: true 
+  getUpcomingConcerts:
+    name: ${self:custom.base}-getUpcomingConcerts
+    description: 'Retrieves a concert by Id'
+    handler: src/handlers/getUpcomingConcerts.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - ! src/**/*
+        - src/helpers/dynamodb.ts
+        - src/getUpcomingConcerts.ts
+    environment:
+      CONCERTS_TABLE: ${self:custom.environment.CONCERTS_TABLE}
+    events:
+      - http:
+         path: /upcomingConcerts
+         method: get
+         cors: true 
+  getConcertsByYear:
+    name: ${self:custom.base}-getConcertsByYear
+    description: 'Retrieves a concert by Year'
+    handler: src/handlers/getConcertsByYear.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - ! src/**/*
+        - src/helpers/dynamodb.ts
+        - src/getConcertsByYear.ts
+    environment:
+      CONCERTS_TABLE: ${self:custom.environment.CONCERTS_TABLE}
+    events:
+      - http:
+         path: /concerts/{year}
+         method: get
+         cors: true 
   

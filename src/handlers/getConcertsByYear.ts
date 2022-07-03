@@ -2,16 +2,16 @@ import { handleError } from '../errors/handler';
 import { CustomDynamoDB } from '../helpers/dynamodb';
 import { isEmptyOrNull } from '../helpers/validation';
 import { ConcertEventType } from '../types/concertTypes.types';
-const db = new CustomDynamoDB(process.env.CONCERTS_TABLE, "id");
+const db = new CustomDynamoDB(process.env.CONCERTS_TABLE, "concertYear");
 
 export const handler = async (event: ConcertEventType) => {
-    const { id } = event.pathParameters;
+    const { year } = event.pathParameters;
 
-    if(isEmptyOrNull(id)) {
-        return handleError("Empty ID", "getConcertById", 400);
+    if(isEmptyOrNull(year)) {
+        return handleError("No Year provided", "getConcertById", 400);
     }
 
-    const concert = await db.getByPrimaryKey(id);
+    const concert = await db.getByPrimaryKey(year, 'date-index');
 
     if(concert.Items.length === 0) {
         return handleError("Concert Not Found", "getConcertById", 404);

@@ -14,7 +14,7 @@ export class CustomDynamoDB {
         });
     }
 
-    async get(id: string){
+    async getByPrimaryKey(id: string, indexName?: string,){
         return this.DB.query({
             KeyConditionExpression: `${this.identifier} = :id`,
             ExpressionAttributeValues: {
@@ -22,7 +22,36 @@ export class CustomDynamoDB {
                     S: id,
                 }
             },
-            TableName: this.tableName
+            TableName: this.tableName,
+            IndexName: indexName ?? null
+        }).promise();
+    }
+
+    async getByIndex(pKName: string, 
+        pKeyValue: string,
+        indexName: string,
+        sortKeyName?: string,
+        sortKeyValue?: string,
+        sortComparison?: string){
+        return this.DB.query({
+            KeyConditionExpression: `${pKName} = :value AND ${sortKeyName} ${sortComparison} :sort`,
+            ExpressionAttributeValues: {
+                ":value": {
+                    S: pKeyValue,
+                },
+                ":sort": {
+                    S: sortKeyValue
+                }
+            },
+            TableName: this.tableName,
+            IndexName: indexName,
+        }).promise();
+    }
+
+    async putItem(item: any) {
+        return this.DB.putItem({
+            Item: CustomDynamoDB.marshall(item),
+            TableName: this.tableName,
         }).promise();
     }
 

@@ -1,21 +1,24 @@
 import { handleError } from '../errors/handler';
 import { CustomDynamoDB } from '../helpers/dynamodb';
-import { isEmptyOrNull } from '../helpers/validation';
 import { ConcertEventType } from '../types/concertTypes.types';
 const db = new CustomDynamoDB(process.env.CONCERTS_TABLE, "id");
 
 export const handler = async (event: ConcertEventType) => {
-    const { id } = event.pathParameters;
 
-    if(isEmptyOrNull(id)) {
-        return handleError("Empty ID", "getConcertById", 400);
+    const today = new Date();
+
+    const res = await db.getByIndex("concertYear", 
+        today.getFullYear().toString(),
+        "concertDate",
+        new Date().toISOString(),
+        ">",
+        "date-index");
+
+    if(res.Items.length === 0) {
+        return handleError("No Upcoming Concerts", "getConcertById", 404);
     }
 
-    const concert = await db.getByPrimaryKey(id);
-
-    if(concert.Items.length === 0) {
-        return handleError("Concert Not Found", "getConcertById", 404);
-    }
+    const concerts = res.Items.map((item) => CustomDynamoDB.unmarshall(item))
 
     return {
         headers: {
@@ -24,6 +27,6 @@ export const handler = async (event: ConcertEventType) => {
             "Access-Control-Allow-Headers": "*",
         },
         statusCode: 200,
-        body: JSON.stringify(CustomDynamoDB.unmarshall(concert.Items[0])),
+        body: JSON.stringify(concerts),
     };
 }

@@ -12,11 +12,25 @@ Resources:
             AttributeType: "S"
           - AttributeName: "concertDate"
             AttributeType: "S"
+          - AttributeName: "concertYear"
+            AttributeType: "S"
         KeySchema: 
           - AttributeName: "id"
             KeyType: "HASH"
           - AttributeName: "concertDate"
             KeyType: "RANGE"
+        GlobalSecondaryIndexes:
+          - IndexName: date-index
+            KeySchema: 
+              - AttributeName: "concertYear"
+                KeyType: "HASH"
+              - AttributeName: "concertDate"
+                KeyType: "RANGE"
+            Projection: 
+              ProjectionType: ALL
+            ProvisionedThroughput: 
+              ReadCapacityUnits: 5
+              WriteCapacityUnits: 5
         Tags:
           - Key: Stage
             Value: ${self:provider.stage}
