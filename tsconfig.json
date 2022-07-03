@@ -2,5 +2,6 @@
   "compilerOptions": {
     "types": ["jest", "node"],
     "esModuleInterop": true,
+    "resolveJsonModule": true
   }
 }

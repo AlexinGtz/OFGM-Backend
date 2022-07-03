@@ -68,7 +68,7 @@ functions:
         - src/helpers/dynamodb.ts
         - src/getConcertById.ts
     environment:
-      CONCERTS_TABLE: !Ref concertsTable
+      CONCERTS_TABLE: ${self:custom.environment.CONCERTS_TABLE}
     events:
       - http:
          path: /concert/{id}

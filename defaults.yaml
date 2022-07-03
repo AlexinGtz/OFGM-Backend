@@ -2,7 +2,4 @@ tags:
   - OFGM
   - Backend
 environment:
-  local:
-  dev:
-  qa:
-  prod:
+  CONCERTS_TABLE: ${self:provider.stage}-concerts

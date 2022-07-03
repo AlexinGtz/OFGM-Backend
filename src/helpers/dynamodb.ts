@@ -12,7 +12,6 @@ export class CustomDynamoDB {
         this.DB = new DynamoDB({
             endpoint: 'http://localhost:4000'
         });
-        console.log("Created class")
     }
 
     async get(id: string){
