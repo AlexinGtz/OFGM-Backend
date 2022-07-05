@@ -55,10 +55,10 @@ Resources:
           Value: ${self:provider.stage}
         - Key: Service
           Value: ${self:service}
-  purchasesTable:
+  ticketsTable:
     Type: AWS::DynamoDB::Table
     Properties: 
-      TableName: ${self:provider.stage}-purchases
+      TableName: ${self:provider.stage}-tickets
       BillingMode: PROVISIONED
       ProvisionedThroughput:
         ReadCapacityUnits: 5
@@ -68,11 +68,23 @@ Resources:
           AttributeType: "S"
         - AttributeName: "date"
           AttributeType: "S"
+        - AttributeName: "email"
+          AttributeType: "S"
       KeySchema: 
         - AttributeName: "id"
           KeyType: "HASH"
         - AttributeName: "date"
           KeyType: "RANGE"
+      GlobalSecondaryIndexes:
+        - IndexName: email-index
+          KeySchema: 
+            - AttributeName: "email"
+              KeyType: "HASH"
+          Projection: 
+            ProjectionType: ALL
+          ProvisionedThroughput: 
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
       Tags:
         - Key: Stage
           Value: ${self:provider.stage}

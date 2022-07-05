@@ -11,7 +11,7 @@ export const handler = async (event: ConcertEventType) => {
         today.getFullYear().toString(),
         "concertDate",
         new Date().toISOString(),
-        ">",
+        ">=",
         "date-index");
 
     if(res.Items.length === 0) {

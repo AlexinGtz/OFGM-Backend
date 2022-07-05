@@ -4,6 +4,7 @@ plugins:
   - serverless-offline
   - serverless-dynamodb-local
   - serverless-plugin-typescript
+  - serverless-s3-local
 
 package:
   individually: true
@@ -49,10 +50,15 @@ custom:
             sources: [./src/seeds/users.json]
           - table: ${self:provider.stage}-concerts
             sources: [./src/seeds/concerts.json]
-          - table: ${self:provider.stage}-purchases
-            sources: [./src/seeds/purchases.json]
+          - table: ${self:provider.stage}-tickets
+            sources: [./src/seeds/tickets.json]
           - table: ${self:provider.stage}-news
             sources: [./src/seeds/news.json]
+  s3:
+    host: localhost
+    region: us-east-1
+    directory: ./.bucket
+    port: 3005
 
 
 functions:
@@ -128,4 +134,60 @@ functions:
          path: /concerts/{year}
          method: get
          cors: true 
+  validateTicket:
+    name: ${self:custom.base}-validateTicket
+    description: 'Retrieves a concert by Year'
+    handler: src/handlers/validateTicket.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - ! src/**/*
+        - src/helpers/dynamodb.ts
+        - src/validateTicket.ts
+    environment:
+      TICKETS_TABLE: ${self:custom.environment.TICKETS_TABLE}
+    events:
+      - http:
+         path: /validateTicket
+         method: post
+         cors: true 
+  getTicketById:
+    name: ${self:custom.base}-getTicketById
+    description: 'Retrieves a ticket by ID'
+    handler: src/handlers/getTicketById.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - ! src/**/*
+        - src/helpers/dynamodb.ts
+        - src/getTicketById.ts
+    environment:
+      TICKETS_TABLE: ${self:custom.environment.TICKETS_TABLE}
+    events:
+      - http:
+         path: /ticket/{id}
+         method: get
+         cors: true
+  ticketTransaction:
+    name: ${self:custom.base}-ticketTransaction
+    description: 'Transacts a ticket'
+    handler: src/handlers/ticketTransaction.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - ! src/**/*
+        - src/helpers/dynamodb.ts
+        - src/ticketTransaction.ts
+    environment:
+      TICKETS_TABLE: ${self:custom.environment.TICKETS_TABLE}
+      DATA_BUCKET: ${self:custom.environment.DATA_BUCKET}
+      
+    events:
+      - http:
+         path: /ticketTransaction
+         method: post
+         cors: true
   

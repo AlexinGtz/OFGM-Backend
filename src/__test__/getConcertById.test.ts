@@ -4,7 +4,7 @@ import { CustomDynamoDB } from '../helpers/dynamodb';
 
 jest.mock("../helpers/dynamodb", () => ({
     CustomDynamoDB: jest.fn(() => ({
-        get: jest.fn((id) => {
+        getByPrimaryKey: jest.fn((id) => {
             if(!id || id === 'invalid_id') {
                 return {
                     Items: []
