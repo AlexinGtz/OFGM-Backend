@@ -18,7 +18,7 @@ Resources:
   DataBucket:
     Type: AWS::S3::Bucket
     Properties:
-      Name: ${self:provider.stage}-ofgm-data-bucket
+      BucketName: ${self:provider.stage}-ofgm-data-bucket
       Tags:
         - Key: Stage
           Value: ${self:provider.stage}
