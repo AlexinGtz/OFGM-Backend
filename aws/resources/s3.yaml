@@ -26,7 +26,6 @@ Resources:
           Value: ${self:service}
   AllowCloudfront:
     Type: AWS::S3::BucketPolicy
-    DependsOn: MainOAI
     Properties: 
       Bucket: !Ref OFGMWebpage
       PolicyDocument: 
@@ -36,4 +35,4 @@ Resources:
             Effect: Allow
             Resource: !Sub arn:aws:s3:::${OFGMWebpage}/*
             Principal: 
-              AWS: arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${MainOAI}
+              AWS: !Sub arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${MainOAI}
