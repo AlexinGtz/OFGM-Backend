@@ -33,7 +33,7 @@ provider:
           Action: 
             - s3:GetObject
             - s3:PutObject
-          Resource: 'arn:aws:dynamodb:us-east-1:*:*'
+          Resource: '*'
   apiGateway:
     restApiId: !Ref MainApi
     restApiRootResourceId: !GetAtt MainApi.RootResourceId
