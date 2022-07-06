@@ -17,6 +17,8 @@ provider:
   timeout: 30
   environment:
     STAGE: ${self:provider.stage}
+  iam:
+    role: !Ref LambdaDeploymentRole
   apiGateway:
     restApiId: !Ref MainApi
     restApiRootResourceId: !GetAtt MainApi.RootResourceId
