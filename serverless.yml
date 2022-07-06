@@ -18,7 +18,7 @@ provider:
   environment:
     STAGE: ${self:provider.stage}
   iam:
-    role: !Ref LambdaDeploymentRole
+    role: LambdaDeploymentRole
   apiGateway:
     restApiId: !Ref MainApi
     restApiRootResourceId: !GetAtt MainApi.RootResourceId
@@ -72,7 +72,7 @@ functions:
     handler: src/handlers/getConcertById.handler
     timeout: 30
     memorySize: 264
-    role: !Ref LambdaDeploymentRole
+    role: LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -91,7 +91,7 @@ functions:
     handler: src/handlers/createConcert.handler
     timeout: 30
     memorySize: 264
-    role: !Ref LambdaDeploymentRole
+    role: LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -110,7 +110,7 @@ functions:
     handler: src/handlers/getUpcomingConcerts.handler
     timeout: 30
     memorySize: 264
-    role: !Ref LambdaDeploymentRole
+    role: LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -129,7 +129,7 @@ functions:
     handler: src/handlers/getConcertsByYear.handler
     timeout: 30
     memorySize: 264
-    role: !Ref LambdaDeploymentRole
+    role: LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -148,7 +148,7 @@ functions:
     handler: src/handlers/validateTicket.handler
     timeout: 30
     memorySize: 264
-    role: !Ref LambdaDeploymentRole
+    role: LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -167,7 +167,7 @@ functions:
     handler: src/handlers/getTicketById.handler
     timeout: 30
     memorySize: 264
-    role: !Ref LambdaDeploymentRole
+    role: LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -186,7 +186,7 @@ functions:
     handler: src/handlers/ticketTransaction.handler
     timeout: 30
     memorySize: 264
-    role: !Ref LambdaDeploymentRole
+    role: LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
