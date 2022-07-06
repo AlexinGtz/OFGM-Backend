@@ -72,6 +72,7 @@ functions:
     handler: src/handlers/getConcertById.handler
     timeout: 30
     memorySize: 264
+    role: !Ref LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -90,6 +91,7 @@ functions:
     handler: src/handlers/createConcert.handler
     timeout: 30
     memorySize: 264
+    role: !Ref LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -108,6 +110,7 @@ functions:
     handler: src/handlers/getUpcomingConcerts.handler
     timeout: 30
     memorySize: 264
+    role: !Ref LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -126,6 +129,7 @@ functions:
     handler: src/handlers/getConcertsByYear.handler
     timeout: 30
     memorySize: 264
+    role: !Ref LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -144,6 +148,7 @@ functions:
     handler: src/handlers/validateTicket.handler
     timeout: 30
     memorySize: 264
+    role: !Ref LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -162,6 +167,7 @@ functions:
     handler: src/handlers/getTicketById.handler
     timeout: 30
     memorySize: 264
+    role: !Ref LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -180,6 +186,7 @@ functions:
     handler: src/handlers/ticketTransaction.handler
     timeout: 30
     memorySize: 264
+    role: !Ref LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -188,7 +195,6 @@ functions:
     environment:
       TICKETS_TABLE: ${self:custom.environment.TICKETS_TABLE}
       DATA_BUCKET: ${self:custom.environment.DATA_BUCKET}
-      
     events:
       - http:
          path: /ticketTransaction
