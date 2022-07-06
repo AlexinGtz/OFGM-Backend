@@ -18,7 +18,22 @@ provider:
   environment:
     STAGE: ${self:provider.stage}
   iam:
-    role: LambdaDeploymentRole
+    role:
+      statements:
+        - Effect: Allow
+          Action: 
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: 'arn:aws:dynamodb:us-east-1:*:*'
+        - Effect: Allow
+          Action: 
+            - s3:GetObject
+            - s3:PutObject
+          Resource: 'arn:aws:dynamodb:us-east-1:*:*'
   apiGateway:
     restApiId: !Ref MainApi
     restApiRootResourceId: !GetAtt MainApi.RootResourceId
@@ -72,7 +87,6 @@ functions:
     handler: src/handlers/getConcertById.handler
     timeout: 30
     memorySize: 264
-    role: LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -91,7 +105,6 @@ functions:
     handler: src/handlers/createConcert.handler
     timeout: 30
     memorySize: 264
-    role: LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -110,7 +123,6 @@ functions:
     handler: src/handlers/getUpcomingConcerts.handler
     timeout: 30
     memorySize: 264
-    role: LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -129,7 +141,6 @@ functions:
     handler: src/handlers/getConcertsByYear.handler
     timeout: 30
     memorySize: 264
-    role: LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -148,7 +159,6 @@ functions:
     handler: src/handlers/validateTicket.handler
     timeout: 30
     memorySize: 264
-    role: LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -167,7 +177,6 @@ functions:
     handler: src/handlers/getTicketById.handler
     timeout: 30
     memorySize: 264
-    role: LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
@@ -186,7 +195,6 @@ functions:
     handler: src/handlers/ticketTransaction.handler
     timeout: 30
     memorySize: 264
-    role: LambdaDeploymentRole
     package:
       patterns:
         - ! src/**/*
