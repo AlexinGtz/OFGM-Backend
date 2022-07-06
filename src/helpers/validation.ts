@@ -4,3 +4,7 @@ export const isEmptyOrNull = (param: any) => {
     }
     return false;
 }
+
+export const isLocal = () => {
+    return process.env.STAGE === 'local';
+}

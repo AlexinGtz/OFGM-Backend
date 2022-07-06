@@ -1,17 +1,15 @@
 import AWS from 'aws-sdk';
 import nodemailer from 'nodemailer';
+import { isLocal } from './validation';
 
 const transporter = nodemailer.createTransport({
     SES: new AWS.SES()
 });
 const S3 = new AWS.S3({
     s3ForcePathStyle: true,
-    credentials: {
-        accessKeyId: "S3RVER",
-        secretAccessKey: "S3RVER",
-    },
+    credentials: isLocal() ? {accessKeyId: "S3RVER",secretAccessKey: "S3RVER"} : null,
     region: 'us-east-1',
-    endpoint: 'http://localhost:3005'
+    endpoint: isLocal() ? 'http://localhost:3005' : null
 });
 
 export const sendMail = async (opt: any) => {

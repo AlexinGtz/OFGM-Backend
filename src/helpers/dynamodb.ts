@@ -1,4 +1,5 @@
 import DynamoDB from 'aws-sdk/clients/dynamodb';
+import { isLocal } from './validation';
 
 
 export class CustomDynamoDB {
@@ -10,7 +11,7 @@ export class CustomDynamoDB {
         this.tableName = tableName;
         this.identifier = identifier;
         this.DB = new DynamoDB({
-            endpoint: 'http://localhost:4000'
+            endpoint: isLocal() ? 'http://localhost:4000' : null
         });
     }
 

@@ -2,20 +2,17 @@ import AWS from 'aws-sdk';
 import { handleError } from '../errors/handler';
 import { CustomDynamoDB } from '../helpers/dynamodb';
 import { v4 as uuidv4 } from 'uuid';
-import { isEmptyOrNull } from '../helpers/validation';
+import { isEmptyOrNull, isLocal } from '../helpers/validation';
 import { ConcertEventType } from '../types/concertTypes.types';
 import { buildPdf } from '../helpers/pdf';
 import { PutObjectRequest } from 'aws-sdk/clients/s3';
 import { sendMail } from '../helpers/mail';
 const ticketsDb = new CustomDynamoDB(process.env.TICKETS_TABLE, "id");
-const s3 = new AWS.S3({
+const S3 = new AWS.S3({
     s3ForcePathStyle: true,
-    credentials: {
-        accessKeyId: "S3RVER",
-        secretAccessKey: "S3RVER",
-    },
+    credentials: isLocal() ? {accessKeyId: "S3RVER",secretAccessKey: "S3RVER"} : null,
     region: 'us-east-1',
-    endpoint: 'http://localhost:3005'
+    endpoint: isLocal() ? 'http://localhost:3005' : null
 });
 
 
@@ -52,7 +49,7 @@ export const handler = async (event: ConcertEventType) => {
             Key: `tickets/${ticket.id}.pdf`,
             Body: fileData,
         };
-        await s3.putObject(s3Params).promise();
+        await S3.putObject(s3Params).promise();
 
         const ticketItem = {
             ...ticket,
@@ -65,7 +62,7 @@ export const handler = async (event: ConcertEventType) => {
     
         // Mandar al FE
         delete s3Params.Body;
-        const pdfUrl = await s3.getSignedUrlPromise('getObject', s3Params);
+        const pdfUrl = await S3.getSignedUrlPromise('getObject', s3Params);
 
         return {
             headers: {
