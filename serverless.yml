@@ -36,6 +36,10 @@ provider:
             - s3:GetObject
             - s3:PutObject
           Resource: '*'
+        - Effect: Allow
+          Action: 
+            - ses:SendRawEmail
+          Resource: '*'
   apiGateway:
     restApiId: !Ref MainApi
     restApiRootResourceId: !GetAtt MainApi.RootResourceId
