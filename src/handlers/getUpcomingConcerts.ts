@@ -24,6 +24,7 @@ export const handler = async (event: ConcertEventType) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "*",
             "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Credentials": true,
         },
         statusCode: 200,
         body: JSON.stringify(concerts),

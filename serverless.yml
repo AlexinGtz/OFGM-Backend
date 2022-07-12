@@ -43,6 +43,7 @@ provider:
   apiGateway:
     restApiId: !Ref MainApi
     restApiRootResourceId: !GetAtt MainApi.RootResourceId
+    cors: true
 
 resources:
   - '${file(./aws/resources/cloudfront.yaml)}'
@@ -56,10 +57,6 @@ custom:
   environment: ${self:custom.defaults.environment}
   service: ${self:service}
   base: ${self:service}-${self:provider.stage}
-  export-env:
-    filename: .env
-    overwrite: false
-    enableOffline: true
   dynamodb:
     stages:
       - local
