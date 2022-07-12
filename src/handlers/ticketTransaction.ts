@@ -2,19 +2,14 @@ import AWS from 'aws-sdk';
 import { handleError } from '../errors/handler';
 import { CustomDynamoDB } from '../helpers/dynamodb';
 import { v4 as uuidv4 } from 'uuid';
-import { isEmptyOrNull, isLocal } from '../helpers/validation';
+import { isEmptyOrNull } from '../helpers/validation';
 import { ConcertEventType } from '../types/concertTypes.types';
 import { buildPdf } from '../helpers/pdf';
 import { PutObjectRequest } from 'aws-sdk/clients/s3';
 import { sendMail } from '../helpers/mail';
 const ticketsDb = new CustomDynamoDB(process.env.TICKETS_TABLE, "id");
 const concertsDb = new CustomDynamoDB(process.env.CONCERTS_TABLE, "id");
-const S3 = new AWS.S3({
-    s3ForcePathStyle: true,
-    credentials: isLocal() ? {accessKeyId: "S3RVER",secretAccessKey: "S3RVER"} : null,
-    region: 'us-east-1',
-    endpoint: isLocal() ? 'http://localhost:3005' : null
-});
+const S3 = new AWS.S3({ region: 'us-east-1' });
 
 
 export const handler = async (event: ConcertEventType) => {

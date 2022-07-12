@@ -15,7 +15,7 @@ provider:
   name: aws
   runtime: nodejs14.x
   region: ${opt:region, "us-east-1"}
-  stage: ${opt:stage, "local"}
+  stage: ${opt:stage}
   timeout: 30
   environment:
     STAGE: ${self:provider.stage}

@@ -1,6 +1,4 @@
 import DynamoDB from 'aws-sdk/clients/dynamodb';
-import { isLocal } from './validation';
-
 
 export class CustomDynamoDB {
     tableName:string;
@@ -10,9 +8,7 @@ export class CustomDynamoDB {
     constructor(tableName: string, identifier: string) {
         this.tableName = tableName;
         this.identifier = identifier;
-        this.DB = new DynamoDB({
-            endpoint: isLocal() ? 'http://localhost:4000' : null
-        });
+        this.DB = new DynamoDB();
     }
 
     async getByPrimaryKey(id: string, indexName?: string, identifier?: string){
