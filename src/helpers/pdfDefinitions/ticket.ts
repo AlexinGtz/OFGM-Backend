@@ -1,7 +1,6 @@
 import fs from 'fs';
 import { TicketsData } from '../../types/pdf.types';
 import { TicketStyles } from './Styles/ticketStyles';
-import QRCode from 'qrcode';
 
 export class TicketPdf {
     data: TicketsData;

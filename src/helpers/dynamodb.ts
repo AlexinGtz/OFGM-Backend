@@ -16,7 +16,6 @@ export class CustomDynamoDB {
     }
 
     async getByPrimaryKey(id: string, indexName?: string, identifier?: string){
-        console.log(id)
         return this.DB.query({
             KeyConditionExpression: `${identifier ?? this.identifier} = :id`,
             ExpressionAttributeValues: {

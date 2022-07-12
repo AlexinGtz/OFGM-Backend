@@ -5,9 +5,11 @@ plugins:
   - serverless-dynamodb-local
   - serverless-plugin-typescript
   - serverless-s3-local
+  - serverless-plugin-include-dependencies
 
 package:
-  individually: true
+  include:
+    - "src/helpers/pdfDefinitions/assets/*"
 
 provider: 
   name: aws
@@ -89,9 +91,10 @@ functions:
     memorySize: 264
     package:
       patterns:
-        - ! src/**/*
-        - src/helpers/dynamodb.ts
-        - src/getConcertById.ts
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/getConcertById.ts"
     environment:
       CONCERTS_TABLE: ${self:custom.environment.CONCERTS_TABLE}
     events:
@@ -107,9 +110,10 @@ functions:
     memorySize: 264
     package:
       patterns:
-        - ! src/**/*
-        - src/helpers/dynamodb.ts
-        - src/createConcert.ts
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/createConcert.ts"
     environment:
       CONCERTS_TABLE: ${self:custom.environment.CONCERTS_TABLE}
     events:
@@ -125,9 +129,10 @@ functions:
     memorySize: 264
     package:
       patterns:
-        - ! src/**/*
-        - src/helpers/dynamodb.ts
-        - src/getUpcomingConcerts.ts
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/getUpcomingConcerts.ts"
     environment:
       CONCERTS_TABLE: ${self:custom.environment.CONCERTS_TABLE}
     events:
@@ -143,9 +148,10 @@ functions:
     memorySize: 264
     package:
       patterns:
-        - ! src/**/*
-        - src/helpers/dynamodb.ts
-        - src/getConcertsByYear.ts
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/getConcertsByYear.ts"
     environment:
       CONCERTS_TABLE: ${self:custom.environment.CONCERTS_TABLE}
     events:
@@ -161,9 +167,10 @@ functions:
     memorySize: 264
     package:
       patterns:
-        - ! src/**/*
-        - src/helpers/dynamodb.ts
-        - src/validateTicket.ts
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/validateTicket.ts"
     environment:
       TICKETS_TABLE: ${self:custom.environment.TICKETS_TABLE}
     events:
@@ -179,9 +186,10 @@ functions:
     memorySize: 264
     package:
       patterns:
-        - ! src/**/*
-        - src/helpers/dynamodb.ts
-        - src/getTicketById.ts
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/getTicketById.ts"
     environment:
       TICKETS_TABLE: ${self:custom.environment.TICKETS_TABLE}
     events:
@@ -197,11 +205,17 @@ functions:
     memorySize: 264
     package:
       patterns:
-        - ! src/**/*
-        - src/helpers/dynamodb.ts
-        - src/ticketTransaction.ts
+        - 'src/helpers/dynamodb.ts'
+        - 'src/helpers/mail.ts'
+        - 'src/helpers/pdf.ts'
+        - 'src/helpers/validation.ts'
+        - 'src/helpers/pdfDefinitions/assets/Gruppo.ttf'
+        - 'src/helpers/pdfDefinitions/assets/Logo.svg'
+        - 'src/helpers/pdfDefinitions/**/*'
+        - 'src/handlers/ticketTransaction.ts'
     environment:
       TICKETS_TABLE: ${self:custom.environment.TICKETS_TABLE}
+      CONCERTS_TABLE: ${self:custom.environment.CONCERTS_TABLE}
       DATA_BUCKET: ${self:custom.environment.DATA_BUCKET}
     events:
       - http:
