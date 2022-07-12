@@ -140,7 +140,7 @@ functions:
       - http:
          path: /upcomingConcerts
          method: get
-         cors: true 
+         cors: true
   getConcertsByYear:
     name: ${self:custom.base}-getConcertsByYear
     description: 'Retrieves a concert by Year'

@@ -4,6 +4,7 @@ export type ConcertEventType = {
         year?: string,
     },
     body?: string,
+    httpMethod?: string,
 }
 
 export interface Concert {

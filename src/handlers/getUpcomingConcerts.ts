@@ -1,9 +1,15 @@
 import { handleError } from '../errors/handler';
 import { CustomDynamoDB } from '../helpers/dynamodb';
+import { optionsRes } from '../helpers/validation';
 import { ConcertEventType } from '../types/concertTypes.types';
 const db = new CustomDynamoDB(process.env.CONCERTS_TABLE, "id");
 
 export const handler = async (event: ConcertEventType) => {
+    console.log("Evento", event);
+    if(event.httpMethod === "OPTIONS"){
+        return optionsRes();
+    }
+
     const today = new Date();
 
     const res = await db.getByIndex("concertYear", 

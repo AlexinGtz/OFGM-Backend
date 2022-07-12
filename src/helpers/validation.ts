@@ -8,3 +8,15 @@ export const isEmptyOrNull = (param: any) => {
 export const isLocal = () => {
     return process.env.STAGE === 'local';
 }
+
+export const optionsRes = () => {
+    return {
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Credentials": true,
+        },
+        statusCode: 200,
+    };
+}
