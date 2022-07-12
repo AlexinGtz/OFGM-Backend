@@ -8,13 +8,13 @@ export const handler = async (event: ConcertEventType) => {
     const { year } = event.pathParameters;
 
     if(isEmptyOrNull(year)) {
-        return handleError("No Year provided", "getConcertById", 400);
+        return handleError("Por favor de proveer el año", "getConcertById", 400);
     }
 
     const concert = await db.getByPrimaryKey(year, 'date-index');
 
     if(concert.Items.length === 0) {
-        return handleError("Concert Not Found", "getConcertById", 404);
+        return handleError("No hay concierto para ese año", "getConcertById", 404);
     }
 
     return {

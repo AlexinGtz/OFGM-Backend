@@ -72,7 +72,7 @@ export class TicketPdf {
     }
 
     _getHeader() {
-        const logo = fs.readFileSync(`${__dirname}/assets/logo.svg`);
+        const logo = fs.readFileSync(`${__dirname}/assets/Logo.svg`);
 
         return [
             {
