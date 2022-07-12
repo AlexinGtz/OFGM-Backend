@@ -30,7 +30,7 @@ export const sendMail = async (opt: any) => {
         </div>
     `,
     attachments: [{
-        filename: "ticket.pdf",
+        filename: `Entrada-${opt.ticket?.email}.pdf`,
         content: ticketPdf.Body
     }]
   });

@@ -57,8 +57,10 @@ export const handler = async (event: ConcertEventType) => {
 
         const ticketItem = {
             ...ticket,
+            concert: ticket.concert?.concertId,
             key: s3Params.Key,
             date: new Date().toISOString(),
+            scanned: false,
         }
         await ticketsDb.putItem(ticketItem);
     
