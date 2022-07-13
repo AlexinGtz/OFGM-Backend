@@ -11,9 +11,9 @@ export const handler = async (event: ConcertEventType) => {
         return handleError("Por favor de proveer el año", "getConcertById", 400);
     }
 
-    const concert = await db.getByPrimaryKey(year, 'date-index');
+    const dbRes = await db.getByPrimaryKey(year, 'date-index');
 
-    if(concert.Items.length === 0) {
+    if(dbRes.Items.length === 0) {
         return handleError("No hay concierto para ese año", "getConcertById", 404);
     }
 
@@ -25,6 +25,6 @@ export const handler = async (event: ConcertEventType) => {
             "Access-Control-Allow-Credentials": true,
         },
         statusCode: 200,
-        body: JSON.stringify(CustomDynamoDB.unmarshall(concert.Items[0])),
+        body: JSON.stringify(dbRes.Items.map(item => CustomDynamoDB.unmarshall(item))),
     };
 }
