@@ -24,7 +24,7 @@ Resources:
             - ErrorCachingMinTTL: 36000
               ErrorCode: 403
               ResponseCode: 403
-              ResponsePagePath: index.html
+              ResponsePagePath: /index.html
           Origins:
             - 
               S3OriginConfig: 
