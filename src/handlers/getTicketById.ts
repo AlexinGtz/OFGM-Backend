@@ -1,4 +1,3 @@
-import { CloudFormation } from 'aws-sdk';
 import { handleError } from '../errors/handler';
 import { CustomDynamoDB } from '../helpers/dynamodb';
 import { isEmptyOrNull } from '../helpers/validation';
@@ -9,13 +8,13 @@ export const handler = async (event: ConcertEventType) => {
     const { id } = event.pathParameters;
 
     if(isEmptyOrNull(id)) {
-        return handleError("Empty ID", "getTicketById", 400);
+        return handleError("No hay ID", "getTicketById", 400);
     }
 
     const ticket = await db.getByPrimaryKey(id);
 
     if(ticket.Items.length === 0) {
-        return handleError("Concert Not Found", "getTicketById", 404);
+        return handleError("Concierto con ese ID no encontrado", "getTicketById", 404);
     }
 
     return {

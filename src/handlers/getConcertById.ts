@@ -8,13 +8,13 @@ export const handler = async (event: ConcertEventType) => {
     const { id } = event.pathParameters;
 
     if(isEmptyOrNull(id)) {
-        return handleError("Empty ID", "getConcertById", 400);
+        return handleError("No hay ID", "getConcertById", 400);
     }
 
     const concert = await db.getByPrimaryKey(id);
 
     if(concert.Items.length === 0) {
-        return handleError("Concert Not Found", "getConcertById", 404);
+        return handleError("El concierto no fue encontrado", "getConcertById", 404);
     }
 
     return {

@@ -9,7 +9,7 @@ export const handler = async (event: ConcertEventType) => {
 
     if(isEmptyOrNull(ticketId)) {
         if(isEmptyOrNull(email)){
-            return handleError("Missing Search Key", "validateTicket", 400);
+            return handleError("Falta email o ID de entrada", "validateTicket", 400);
         }
     }
 
@@ -18,17 +18,17 @@ export const handler = async (event: ConcertEventType) => {
         ticketId ? null : 'email');
 
     if(res.Items.length === 0) {
-        return handleError("Ticket Not Found", "validateTicket", 404);
+        return handleError("Entrada no encontrada", "validateTicket", 404);
     }
 
     const ticket = CustomDynamoDB.unmarshall(res.Items[0]);
 
     if(ticket.concert !== concert) {
-        return handleError("Ticket Is for another concert", "validateTicket", 409);
+        return handleError("Esta entrada es para otro concierto", "validateTicket", 409);
     }
 
     if(ticket.scanned) {
-        return handleError("Ticket Was already Scanned", "validateTicket", 409);
+        return handleError("Esta entrada ya fue escaneada", "validateTicket", 409);
     }
 
     const newTicket = {

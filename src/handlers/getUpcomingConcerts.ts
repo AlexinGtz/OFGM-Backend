@@ -5,11 +5,6 @@ import { ConcertEventType } from '../types/concertTypes.types';
 const db = new CustomDynamoDB(process.env.CONCERTS_TABLE, "id");
 
 export const handler = async (event: ConcertEventType) => {
-    console.log("Evento", event);
-    if(event.httpMethod === "OPTIONS"){
-        return optionsRes();
-    }
-
     const today = new Date();
 
     const res = await db.getByIndex("concertYear", 
@@ -20,7 +15,7 @@ export const handler = async (event: ConcertEventType) => {
         ">=");
 
     if(res.Items.length === 0) {
-        return handleError("No Upcoming Concerts", "getConcertById", 404);
+        return handleError("No hay eventos próximos", "getConcertById", 404);
     }
 
     const concerts = res.Items.map((item) => CustomDynamoDB.unmarshall(item))

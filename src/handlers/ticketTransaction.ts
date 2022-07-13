@@ -19,19 +19,21 @@ export const handler = async (event: ConcertEventType) => {
         || isEmptyOrNull(email)
         || isEmptyOrNull(name)
         || isEmptyOrNull(atendees)) {
-           return handleError("Input data not valid", "ticketTransaction", 400); 
+           return handleError("Datos no válidos", "ticketTransaction", 400); 
     }
 
-    const existingTicket = await ticketsDb.getByPrimaryKey(email, 'email-index', 'email');
-
-    if(existingTicket.Items.length > 0) {
-        return handleError("You already have tickets registered", "ticketTransaction", 400);
+    const existingTickets = await ticketsDb.getByPrimaryKey(email, 'email-index', 'email');
+    const concertTickets = existingTickets.Items.map((item: any) => CustomDynamoDB.unmarshall(item));
+    const concertTicket = concertTickets.find((ticket) => ticket.concert === concertId);
+    
+    if(concertTicket) {
+        return handleError("Ya tienes una entrada con tu correo", "ticketTransaction", 400);
     }
 
     const concertRes = await concertsDb.getByPrimaryKey(concertId);
 
     if(concertRes.Items.length <= 0) {
-        return handleError("Concert not found", "ticketTransaction", 400);
+        return handleError("Concierto no encontrado", "ticketTransaction", 400);
     }
 
     const concert = CustomDynamoDB.unmarshall(concertRes.Items[0]);
