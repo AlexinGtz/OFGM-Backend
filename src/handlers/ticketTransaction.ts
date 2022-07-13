@@ -9,8 +9,17 @@ import { PutObjectRequest } from 'aws-sdk/clients/s3';
 import { sendMail } from '../helpers/mail';
 const ticketsDb = new CustomDynamoDB(process.env.TICKETS_TABLE, "id");
 const concertsDb = new CustomDynamoDB(process.env.CONCERTS_TABLE, "id");
-const S3 = new AWS.S3({ region: 'us-east-1' });
+const ignoredMailsDb = new CustomDynamoDB(process.env.IGNORED_MAILS_TABLE, "email");
 
+const S3 = new AWS.S3({
+    // s3ForcePathStyle: true,
+    // credentials: {
+    //     accessKeyId: "S3RVER",
+    //     secretAccessKey: "S3RVER",
+    // },
+    region: 'us-east-1',
+    // endpoint: 'http://localhost:3005'
+});
 
 export const handler = async (event: ConcertEventType) => {
     const { concertId, email, name, atendees } = JSON.parse(event.body);
@@ -49,12 +58,19 @@ export const handler = async (event: ConcertEventType) => {
     try {
         const fileData = await buildPdf(ticket);
 
-        // Guardar en s3
         const s3Params: PutObjectRequest = {
             Bucket: process.env.DATA_BUCKET,
             Key: `tickets/${ticket.id}.pdf`,
             Body: fileData,
         };
+
+        // Mandar correo
+        const ignoreMail = await ignoredMailsDb.getByPrimaryKey(ticket.email);
+        if(!(ignoreMail.Items.length > 0)) {
+            await sendMail({ticket, file: fileData});
+        } 
+
+        // Guardar en s3
         await S3.putObject(s3Params).promise();
 
         const ticketItem = {
@@ -65,9 +81,6 @@ export const handler = async (event: ConcertEventType) => {
             scanned: false,
         }
         await ticketsDb.putItem(ticketItem);
-    
-        // Mandar correo
-        await sendMail({ticket, file: s3Params});
     
         // Mandar al FE
         delete s3Params.Body;

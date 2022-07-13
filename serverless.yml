@@ -218,9 +218,48 @@ functions:
       TICKETS_TABLE: ${self:custom.environment.TICKETS_TABLE}
       CONCERTS_TABLE: ${self:custom.environment.CONCERTS_TABLE}
       DATA_BUCKET: ${self:custom.environment.DATA_BUCKET}
+      IGNORED_MAILS_TABLE: ${self:custom.environment.IGNORED_MAILS_TABLE}
     events:
       - http:
          path: /ticketTransaction
          method: post
          cors: true
+  ignoreMail:
+    name: ${self:custom.base}-ignoreMail
+    description: 'Ignores a mail'
+    handler: src/handlers/ignoreMail.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/ignoreMail.ts"
+    environment:
+      IGNORED_MAILS_TABLE: ${self:custom.environment.IGNORED_MAILS_TABLE}
+    events:
+      - http:
+         path: /ignoreMail
+         method: get
+         cors: true
+  getIgnoredMail:
+    name: ${self:custom.base}-getIgnoredMail
+    description: 'Ignores a mail'
+    handler: src/handlers/getIgnoredMail.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/getIgnoredMail.ts"
+    environment:
+      IGNORED_MAILS_TABLE: ${self:custom.environment.IGNORED_MAILS_TABLE}
+    events:
+      - http:
+         path: /ignoreMail/{email}
+         method: get
+         cors: true 
   

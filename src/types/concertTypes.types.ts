@@ -2,6 +2,10 @@ export type ConcertEventType = {
     pathParameters?: {
         id?: string,
         year?: string,
+        email?: string,
+    },
+    queryStringParameters?: {
+        email?: string
     },
     body?: string,
     httpMethod?: string,

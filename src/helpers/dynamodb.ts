@@ -8,7 +8,9 @@ export class CustomDynamoDB {
     constructor(tableName: string, identifier: string) {
         this.tableName = tableName;
         this.identifier = identifier;
-        this.DB = new DynamoDB();
+        this.DB = new DynamoDB({
+            // endpoint: 'http://localhost:4000' // Comment if not Local
+        });
     }
 
     async getByPrimaryKey(id: string, indexName?: string, identifier?: string){

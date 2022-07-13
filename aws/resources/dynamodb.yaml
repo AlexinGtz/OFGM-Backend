@@ -113,3 +113,22 @@ Resources:
           Value: ${self:provider.stage}
         - Key: Service
           Value: ${self:service}
+  ignoredMailsTable:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      TableName: ${self:provider.stage}-ignored-mails
+      BillingMode: PROVISIONED
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      AttributeDefinitions: 
+        - AttributeName: "email"
+          AttributeType: "S"
+      KeySchema: 
+        - AttributeName: "email"
+          KeyType: "HASH"
+      Tags:
+        - Key: Stage
+          Value: ${self:provider.stage}
+        - Key: Service
+          Value: ${self:service}
