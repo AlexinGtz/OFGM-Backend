@@ -20,6 +20,11 @@ Resources:
           Enabled: true
           PriceClass: PriceClass_100
           DefaultRootObject: index.html
+          CustomErrorResponses:
+            - ErrorCachingMinTTL: 36000
+              ErrorCode: 403
+              ResponseCode: 403
+              ResponsePagePath: index.html
           Origins:
             - 
               S3OriginConfig: 
