@@ -44,7 +44,7 @@ Resources:
           DefaultTTL: 6000
           MaxTTL: 10000
           MinTTL: 2000
-          Name: MainCache
+          Name: ${self:provider.stage}-MainCache
           ParametersInCacheKeyAndForwardedToOrigin: 
             CookiesConfig: 
                 CookieBehavior: all
