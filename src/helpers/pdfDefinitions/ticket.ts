@@ -63,12 +63,13 @@ export class TicketPdf {
         const date = new Date(dateString);
         const options: Intl.DateTimeFormatOptions = { 
             hour: "2-digit",
-            minute: "2-digit" 
+            minute: "2-digit",
+            timeZone: "CST"
         };
 
-        const currentDate = date.toLocaleDateString('es-MX', options).split(" ");
+        const currentDate = date.toLocaleString('es-MX', options).split(" ");
 
-        return `${currentDate[1]}`
+        return `${currentDate[0]}`
     }
 
     _getHeader() {
