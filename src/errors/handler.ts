@@ -1,4 +1,6 @@
 export const handleError = (message: string, key: string, code: number) => {
+
+    console.log(message)
     
     const error = {
         message,
