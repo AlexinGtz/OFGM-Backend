@@ -3,6 +3,7 @@ export type ConcertEventType = {
         id?: string,
         year?: string,
         email?: string,
+        concertId?: string
     },
     queryStringParameters?: {
         email?: string

@@ -13,7 +13,7 @@ export class CustomDynamoDB {
         });
     }
 
-    async getByPrimaryKey(id: string, indexName?: string, identifier?: string){
+    async getByPrimaryKey(id: string, indexName?: string, identifier?: string, attributes?: Array<string> ){
         return this.DB.query({
             KeyConditionExpression: `${identifier ?? this.identifier} = :id`,
             ExpressionAttributeValues: {
@@ -22,7 +22,11 @@ export class CustomDynamoDB {
                 }
             },
             TableName: this.tableName,
-            IndexName: indexName ?? null
+            IndexName: indexName ?? null,
+            Select: attributes ? 'SPECIFIC_ATTRIBUTES' : 'ALL_ATTRIBUTES',
+            ProjectionExpression: attributes ? 
+                attributes.join(',')
+                : null,
         }).promise();
     }
 

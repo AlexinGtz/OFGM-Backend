@@ -3,10 +3,7 @@ Resources:
       Type: AWS::DynamoDB::Table
       Properties: 
         TableName: ${self:provider.stage}-concerts
-        BillingMode: PROVISIONED
-        ProvisionedThroughput:
-          ReadCapacityUnits: 5
-          WriteCapacityUnits: 5
+        BillingMode: PAY_PER_REQUEST
         AttributeDefinitions: 
           - AttributeName: "id"
             AttributeType: "S"
@@ -28,9 +25,6 @@ Resources:
                 KeyType: "RANGE"
             Projection: 
               ProjectionType: ALL
-            ProvisionedThroughput: 
-              ReadCapacityUnits: 5
-              WriteCapacityUnits: 5
         Tags:
           - Key: Stage
             Value: ${self:provider.stage}
@@ -40,10 +34,7 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties: 
       TableName: ${self:provider.stage}-users
-      BillingMode: PROVISIONED
-      ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+      BillingMode: PAY_PER_REQUEST
       AttributeDefinitions: 
         - AttributeName: "id"
           AttributeType: "S"
@@ -59,16 +50,15 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties: 
       TableName: ${self:provider.stage}-tickets
-      BillingMode: PROVISIONED
-      ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+      BillingMode: PAY_PER_REQUEST
       AttributeDefinitions: 
         - AttributeName: "id"
           AttributeType: "S"
         - AttributeName: "date"
           AttributeType: "S"
         - AttributeName: "email"
+          AttributeType: "S"
+        - AttributeName: "concert"
           AttributeType: "S"
       KeySchema: 
         - AttributeName: "id"
@@ -82,9 +72,12 @@ Resources:
               KeyType: "HASH"
           Projection: 
             ProjectionType: ALL
-          ProvisionedThroughput: 
-            ReadCapacityUnits: 5
-            WriteCapacityUnits: 5
+        - IndexName: concert-index
+          KeySchema: 
+            - AttributeName: "concert"
+              KeyType: "HASH"
+          Projection: 
+            ProjectionType: ALL
       Tags:
         - Key: Stage
           Value: ${self:provider.stage}
@@ -94,10 +87,7 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties: 
       TableName: ${self:provider.stage}-news
-      BillingMode: PROVISIONED
-      ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+      BillingMode: PAY_PER_REQUEST
       AttributeDefinitions: 
         - AttributeName: "id"
           AttributeType: "S"
@@ -117,10 +107,7 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties: 
       TableName: ${self:provider.stage}-ignored-mails
-      BillingMode: PROVISIONED
-      ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+      BillingMode: PAY_PER_REQUEST
       AttributeDefinitions: 
         - AttributeName: "email"
           AttributeType: "S"

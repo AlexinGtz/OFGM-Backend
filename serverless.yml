@@ -262,4 +262,23 @@ functions:
          path: /ignoreMail/{email}
          method: get
          cors: true 
+  concertAssistants:
+    name: ${self:custom.base}-concertAssistants
+    description: 'Retrieves the number of assistants to a concert'
+    handler: src/handlers/concertAssistants.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/concertAssistants.ts"
+    environment:
+      TICKETS_TABLE: ${self:custom.environment.TICKETS_TABLE}
+    events:
+      - http:
+         path: /concertAssistants/{concertId}
+         method: get
+         cors: true
   
