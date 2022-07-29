@@ -2,3 +2,5 @@ node_modules
 .build
 .dynamodb
 coverage
+.bucket
+.serverless

@@ -2,7 +2,7 @@ tags:
   - OFGM
   - Backend
 environment:
-  local:
-  dev:
-  qa:
-  prod:
+  CONCERTS_TABLE: ${self:provider.stage}-concerts
+  TICKETS_TABLE: ${self:provider.stage}-tickets
+  DATA_BUCKET: ${self:provider.stage}-ofgm-data-bucket
+  IGNORED_MAILS_TABLE: ${self:provider.stage}-ignored-mails

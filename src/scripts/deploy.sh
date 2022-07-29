@@ -6,5 +6,8 @@ ENV=$3
 
 npm ci
 npm i serverless -g
-serverless deploy --stage=${ENV} --region=us-east-1 
+serverless package --stage=${ENV} --package=output
+ls -a
+echo environment ${ENV}
+serverless deploy --stage=${ENV} --region=us-east-1 --package=output
 

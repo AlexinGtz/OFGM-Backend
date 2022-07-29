@@ -3,20 +3,28 @@ Resources:
       Type: AWS::DynamoDB::Table
       Properties: 
         TableName: ${self:provider.stage}-concerts
-        BillingMode: PROVISIONED
-        ProvisionedThroughput:
-          ReadCapacityUnits: 5
-          WriteCapacityUnits: 5
+        BillingMode: PAY_PER_REQUEST
         AttributeDefinitions: 
           - AttributeName: "id"
             AttributeType: "S"
           - AttributeName: "concertDate"
+            AttributeType: "S"
+          - AttributeName: "concertYear"
             AttributeType: "S"
         KeySchema: 
           - AttributeName: "id"
             KeyType: "HASH"
           - AttributeName: "concertDate"
             KeyType: "RANGE"
+        GlobalSecondaryIndexes:
+          - IndexName: date-index
+            KeySchema: 
+              - AttributeName: "concertYear"
+                KeyType: "HASH"
+              - AttributeName: "concertDate"
+                KeyType: "RANGE"
+            Projection: 
+              ProjectionType: ALL
         Tags:
           - Key: Stage
             Value: ${self:provider.stage}
@@ -26,10 +34,7 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties: 
       TableName: ${self:provider.stage}-users
-      BillingMode: PROVISIONED
-      ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+      BillingMode: PAY_PER_REQUEST
       AttributeDefinitions: 
         - AttributeName: "id"
           AttributeType: "S"
@@ -41,24 +46,38 @@ Resources:
           Value: ${self:provider.stage}
         - Key: Service
           Value: ${self:service}
-  purchasesTable:
+  ticketsTable:
     Type: AWS::DynamoDB::Table
     Properties: 
-      TableName: ${self:provider.stage}-purchases
-      BillingMode: PROVISIONED
-      ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+      TableName: ${self:provider.stage}-tickets
+      BillingMode: PAY_PER_REQUEST
       AttributeDefinitions: 
         - AttributeName: "id"
           AttributeType: "S"
         - AttributeName: "date"
+          AttributeType: "S"
+        - AttributeName: "email"
+          AttributeType: "S"
+        - AttributeName: "concert"
           AttributeType: "S"
       KeySchema: 
         - AttributeName: "id"
           KeyType: "HASH"
         - AttributeName: "date"
           KeyType: "RANGE"
+      GlobalSecondaryIndexes:
+        - IndexName: email-index
+          KeySchema: 
+            - AttributeName: "email"
+              KeyType: "HASH"
+          Projection: 
+            ProjectionType: ALL
+        - IndexName: concert-index
+          KeySchema: 
+            - AttributeName: "concert"
+              KeyType: "HASH"
+          Projection: 
+            ProjectionType: ALL
       Tags:
         - Key: Stage
           Value: ${self:provider.stage}
@@ -68,10 +87,7 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties: 
       TableName: ${self:provider.stage}-news
-      BillingMode: PROVISIONED
-      ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+      BillingMode: PAY_PER_REQUEST
       AttributeDefinitions: 
         - AttributeName: "id"
           AttributeType: "S"
@@ -82,6 +98,22 @@ Resources:
           KeyType: "HASH"
         - AttributeName: "date"
           KeyType: "RANGE"
+      Tags:
+        - Key: Stage
+          Value: ${self:provider.stage}
+        - Key: Service
+          Value: ${self:service}
+  ignoredMailsTable:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      TableName: ${self:provider.stage}-ignored-mails
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: 
+        - AttributeName: "email"
+          AttributeType: "S"
+      KeySchema: 
+        - AttributeName: "email"
+          KeyType: "HASH"
       Tags:
         - Key: Stage
           Value: ${self:provider.stage}
