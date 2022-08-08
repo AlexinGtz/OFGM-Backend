@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   }
 }

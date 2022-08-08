@@ -2,7 +2,9 @@ tags:
   - OFGM
   - Backend
 environment:
-  local:
-  dev:
-  qa:
-  prod:
+  CONCERTS_TABLE: ${self:provider.stage}-concerts
+  TICKETS_TABLE: ${self:provider.stage}-tickets
+  DATA_BUCKET: ${self:provider.stage}-ofgm-data-bucket
+  IGNORED_MAILS_TABLE: ${self:provider.stage}-ignored-mails
+  PROD_URL: https://0req57xjz5.execute-api.us-east-1.amazonaws.com/prod
+  QA_URL: https://sgct180v33.execute-api.us-east-1.amazonaws.com/qa

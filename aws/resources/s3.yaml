@@ -15,9 +15,17 @@ Resources:
           Value: ${self:provider.stage}
         - Key: Service
           Value: ${self:service}
+  DataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: ${self:provider.stage}-ofgm-data-bucket
+      Tags:
+        - Key: Stage
+          Value: ${self:provider.stage}
+        - Key: Service
+          Value: ${self:service}
   AllowCloudfront:
     Type: AWS::S3::BucketPolicy
-    DependsOn: MainOAI
     Properties: 
       Bucket: !Ref OFGMWebpage
       PolicyDocument: 
@@ -27,4 +35,4 @@ Resources:
             Effect: Allow
             Resource: !Sub arn:aws:s3:::${OFGMWebpage}/*
             Principal: 
-              AWS: arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${MainOAI}
+              AWS: !Sub arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${MainOAI}

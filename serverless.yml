@@ -4,19 +4,46 @@ plugins:
   - serverless-offline
   - serverless-dynamodb-local
   - serverless-plugin-typescript
+  - serverless-s3-local
+  - serverless-plugin-include-dependencies
 
 package:
-  individually: true
+  include:
+    - "src/helpers/pdfDefinitions/assets/*"
 
 provider: 
   name: aws
   runtime: nodejs14.x
   region: ${opt:region, "us-east-1"}
-  stage: ${opt:stage, "local"}
+  stage: ${opt:stage}
   timeout: 30
+  environment:
+    STAGE: ${self:provider.stage}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: 
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: 'arn:aws:dynamodb:us-east-1:*:*'
+        - Effect: Allow
+          Action: 
+            - s3:GetObject
+            - s3:PutObject
+          Resource: '*'
+        - Effect: Allow
+          Action: 
+            - ses:SendRawEmail
+          Resource: '*'
   apiGateway:
     restApiId: !Ref MainApi
     restApiRootResourceId: !GetAtt MainApi.RootResourceId
+    cors: true
 
 resources:
   - '${file(./aws/resources/cloudfront.yaml)}'
@@ -37,7 +64,7 @@ custom:
       port: 4000
       inMemory: true
       migrate: true
-      seed: false
+      seed: true
     seed:
       tables:
         sources:
@@ -45,28 +72,214 @@ custom:
             sources: [./src/seeds/users.json]
           - table: ${self:provider.stage}-concerts
             sources: [./src/seeds/concerts.json]
-          - table: ${self:provider.stage}-purchases
-            sources: [./src/seeds/purchases.json]
+          - table: ${self:provider.stage}-tickets
+            sources: [./src/seeds/tickets.json]
           - table: ${self:provider.stage}-news
             sources: [./src/seeds/news.json]
+  s3:
+    host: localhost
+    region: us-east-1
+    directory: ./.bucket
+    port: 3005
 
 
 functions:
-  test:
-    name: testFunction
-    description: ''
-    handler: src/testLambda.handler
+  getConcertById:
+    name: ${self:custom.base}-getConcertById
+    description: 'Retrieves a concert by Id'
+    handler: src/handlers/getConcertById.handler
     timeout: 30
     memorySize: 264
     package:
       patterns:
-        - src/testLambda
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/getConcertById.ts"
     environment:
-      USERS_TABLE: 
-        Ref:  usersTable
+      CONCERTS_TABLE: ${self:custom.environment.CONCERTS_TABLE}
     events:
       - http:
-         path: /test
+         path: /concert/{id}
+         method: get
+         cors: true 
+  createConcert:
+    name: ${self:custom.base}-createConcert
+    description: 'Creates a concert'
+    handler: src/handlers/createConcert.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/createConcert.ts"
+    environment:
+      CONCERTS_TABLE: ${self:custom.environment.CONCERTS_TABLE}
+    events:
+      - http:
+         path: /concert
+         method: post
+         cors: true 
+  getUpcomingConcerts:
+    name: ${self:custom.base}-getUpcomingConcerts
+    description: 'Retrieves a concert by Id'
+    handler: src/handlers/getUpcomingConcerts.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/getUpcomingConcerts.ts"
+    environment:
+      CONCERTS_TABLE: ${self:custom.environment.CONCERTS_TABLE}
+    events:
+      - http:
+         path: /upcomingConcerts
+         method: get
+         cors: true
+  getConcertsByYear:
+    name: ${self:custom.base}-getConcertsByYear
+    description: 'Retrieves a concert by Year'
+    handler: src/handlers/getConcertsByYear.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/getConcertsByYear.ts"
+    environment:
+      CONCERTS_TABLE: ${self:custom.environment.CONCERTS_TABLE}
+    events:
+      - http:
+         path: /concerts/{year}
+         method: get
+         cors: true 
+  validateTicket:
+    name: ${self:custom.base}-validateTicket
+    description: 'Retrieves a concert by Year'
+    handler: src/handlers/validateTicket.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/validateTicket.ts"
+    environment:
+      TICKETS_TABLE: ${self:custom.environment.TICKETS_TABLE}
+    events:
+      - http:
+         path: /validateTicket
+         method: post
+         cors: true 
+  getTicketById:
+    name: ${self:custom.base}-getTicketById
+    description: 'Retrieves a ticket by ID'
+    handler: src/handlers/getTicketById.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/getTicketById.ts"
+    environment:
+      TICKETS_TABLE: ${self:custom.environment.TICKETS_TABLE}
+    events:
+      - http:
+         path: /ticket/{id}
+         method: get
+         cors: true
+  ticketTransaction:
+    name: ${self:custom.base}-ticketTransaction
+    description: 'Transacts a ticket'
+    handler: src/handlers/ticketTransaction.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - 'src/helpers/dynamodb.ts'
+        - 'src/helpers/mail.ts'
+        - 'src/helpers/pdf.ts'
+        - 'src/helpers/validation.ts'
+        - 'src/helpers/pdfDefinitions/assets/Gruppo.ttf'
+        - 'src/helpers/pdfDefinitions/assets/Logo.svg'
+        - 'src/helpers/pdfDefinitions/**/*'
+        - 'src/handlers/ticketTransaction.ts'
+    environment:
+      TICKETS_TABLE: ${self:custom.environment.TICKETS_TABLE}
+      CONCERTS_TABLE: ${self:custom.environment.CONCERTS_TABLE}
+      DATA_BUCKET: ${self:custom.environment.DATA_BUCKET}
+      IGNORED_MAILS_TABLE: ${self:custom.environment.IGNORED_MAILS_TABLE}
+      PROD_URL: ${self:custom.environment.PROD_URL}
+    events:
+      - http:
+         path: /ticketTransaction
+         method: post
+         cors: true
+  ignoreMail:
+    name: ${self:custom.base}-ignoreMail
+    description: 'Ignores a mail'
+    handler: src/handlers/ignoreMail.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/ignoreMail.ts"
+    environment:
+      IGNORED_MAILS_TABLE: ${self:custom.environment.IGNORED_MAILS_TABLE}
+    events:
+      - http:
+         path: /ignoreMail
+         method: get
+         cors: true
+  getIgnoredMail:
+    name: ${self:custom.base}-getIgnoredMail
+    description: 'Ignores a mail'
+    handler: src/handlers/getIgnoredMail.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/getIgnoredMail.ts"
+    environment:
+      IGNORED_MAILS_TABLE: ${self:custom.environment.IGNORED_MAILS_TABLE}
+    events:
+      - http:
+         path: /ignoreMail/{email}
+         method: get
+         cors: true 
+  concertAssistants:
+    name: ${self:custom.base}-concertAssistants
+    description: 'Retrieves the number of assistants to a concert'
+    handler: src/handlers/concertAssistants.handler
+    timeout: 30
+    memorySize: 264
+    package:
+      patterns:
+        - "!src/**/*"
+        - "src/helpers/validation.ts"
+        - "src/helpers/dynamodb.ts"
+        - "src/handlers/concertAssistants.ts"
+    environment:
+      TICKETS_TABLE: ${self:custom.environment.TICKETS_TABLE}
+    events:
+      - http:
+         path: /concertAssistants/{concertId}
          method: get
          cors: true
   

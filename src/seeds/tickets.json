@@ -1,0 +1,29 @@
+[
+    {
+        "id": "fa2c6747-076c-466f-a9ee-d4bcc1400b45",
+        "date": "2022-08-12T15:00:00-06:00",
+        "email": "test@test.com",
+        "concert": "fa2c6747-076c-466f-a9ee-d4bcc1400b32",
+        "atendees": 1,
+        "scanned": false,
+        "name": "Jon Doe"
+    },
+    {
+        "id": "fa2c6747-076c-466f-a9ee-d4bcc1400b46",
+        "date": "2022-08-12T15:00:00-06:00",
+        "email": "test1@test.com",
+        "concert": "fa2c6747-076c-466f-a9ee-d4bcc1400b32",
+        "atendees": 2,
+        "scanned": false,
+        "name": "Jane Doe"
+    },
+    {
+        "id": "fa2c6747-076c-466f-a9ee-d4bcc1400b47",
+        "date": "2022-08-12T15:00:00-06:00",
+        "email": "test2@test.com",
+        "concert": "fa2c6747-076c-466f-a9fe-d4bcc1400b32",
+        "atendees": 4,
+        "scanned": false,
+        "name": "Equis Doe"
+    }
+]
