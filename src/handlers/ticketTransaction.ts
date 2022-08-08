@@ -7,6 +7,7 @@ import { ConcertEventType } from '../types/concertTypes.types';
 import { buildPdf } from '../helpers/pdf';
 import { PutObjectRequest } from 'aws-sdk/clients/s3';
 import { sendMail } from '../helpers/mail';
+import axios from 'axios';
 const ticketsDb = new CustomDynamoDB(process.env.TICKETS_TABLE, "id");
 const concertsDb = new CustomDynamoDB(process.env.CONCERTS_TABLE, "id");
 const ignoredMailsDb = new CustomDynamoDB(process.env.IGNORED_MAILS_TABLE, "email");
@@ -31,18 +32,24 @@ export const handler = async (event: ConcertEventType) => {
            return handleError("Datos no válidos", "ticketTransaction", 400); 
     }
 
+    const concertRes = await concertsDb.getByPrimaryKey(concertId);
+
+    if(concertRes.Items.length <= 0) {
+        return handleError("Concierto no encontrado", "ticketTransaction", 400);
+    }
+    
+    const reservedTickets = (await axios.get(`${process.env.PROD_URL}/concertAssistants/${concertId}`)).data.atendees;
+    
+    if(reservedTickets+atendees > 320){ // Change for concertRes.maxSeats
+        return handleError("Ya no hay entradas disponibles", "ticketTransaction", 400);
+    }
+
     const existingTickets = await ticketsDb.getByPrimaryKey(email, 'email-index', 'email');
     const concertTickets = existingTickets.Items.map((item: any) => CustomDynamoDB.unmarshall(item));
     const concertTicket = concertTickets.find((ticket) => ticket.concert === concertId);
     
     if(concertTicket) {
         return handleError("Ya tienes una entrada con tu correo", "ticketTransaction", 400);
-    }
-
-    const concertRes = await concertsDb.getByPrimaryKey(concertId);
-
-    if(concertRes.Items.length <= 0) {
-        return handleError("Concierto no encontrado", "ticketTransaction", 400);
     }
 
     const concert = CustomDynamoDB.unmarshall(concertRes.Items[0]);

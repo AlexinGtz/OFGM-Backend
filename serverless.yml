@@ -219,6 +219,7 @@ functions:
       CONCERTS_TABLE: ${self:custom.environment.CONCERTS_TABLE}
       DATA_BUCKET: ${self:custom.environment.DATA_BUCKET}
       IGNORED_MAILS_TABLE: ${self:custom.environment.IGNORED_MAILS_TABLE}
+      PROD_URL: ${self:custom.environment.PROD_URL}
     events:
       - http:
          path: /ticketTransaction

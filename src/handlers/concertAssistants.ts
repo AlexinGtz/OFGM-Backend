@@ -26,6 +26,8 @@ export const handler = async (event: ConcertEventType) => {
             "Access-Control-Allow-Credentials": true,
         },
         statusCode: 200,
-        body: JSON.stringify(`Van a ir ${res.atendees} personas`),
+        body: JSON.stringify({
+            atendees: res.atendees
+        }),
     };
 }
