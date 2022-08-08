@@ -40,7 +40,7 @@ export const handler = async (event: ConcertEventType) => {
     
     const reservedTickets = (await axios.get(`${process.env.PROD_URL}/concertAssistants/${concertId}`)).data.atendees;
     
-    if(reservedTickets+atendees > 320){ // Change for concertRes.maxSeats
+    if(reservedTickets+atendees > 340){ // Change for concertRes.maxSeats
         return handleError("Ya no hay entradas disponibles", "ticketTransaction", 400);
     }
 
